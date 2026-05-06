@@ -14,9 +14,6 @@
       getFirestore, doc, getDoc, setDoc, onSnapshot, collection, addDoc, serverTimestamp, query, orderBy, limit
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    // =============================================
-    // 🔥 CONFIGURE AQUI COM SEUS DADOS DO FIREBASE
-    // =============================================
     const firebaseConfig = {
       apiKey: "AIzaSyBPkvYSO1Q0M1-rOgnRu-GXLOQAYTyeMx0",
       authDomain: "pacozinha-aura.firebaseapp.com",
@@ -25,311 +22,193 @@
       messagingSenderId: "1038587389974",
       appId: "1:1038587389974:web:3044041161b7f49b852d37"
     };
-    // =============================================
 
     const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    window._db = db;
-    window._doc = doc;
-    window._getDoc = getDoc;
-    window._setDoc = setDoc;
-    window._onSnapshot = onSnapshot;
-    window._collection = collection;
-    window._addDoc = addDoc;
+    const db  = getFirestore(app);
+    window._db              = db;
+    window._doc             = doc;
+    window._getDoc          = getDoc;
+    window._setDoc          = setDoc;
+    window._onSnapshot      = onSnapshot;
+    window._collection      = collection;
+    window._addDoc          = addDoc;
     window._serverTimestamp = serverTimestamp;
-    window._query = query;
-    window._orderBy = orderBy;
-    window._limit = limit;
-
+    window._query           = query;
+    window._orderBy         = orderBy;
+    window._limit           = limit;
     window.dispatchEvent(new Event('firebase-ready'));
   </script>
 
   <style>
     :root {
-      --bg: #f5f2ee;
-      --bg2: #faf8f5;
-      --bg3: #ece8e2;
-      --border: #ddd8d0;
-      --border2: #ccc6bc;
-      --text: #1e1b17;
-      --text2: #6b6560;
-      --text3: #a09890;
-      --accent: #8a6a3a;
-      --accent2: #6a4e28;
-      --ok: #3a6a28;
-      --ok-bg: #e8f2e0;
-      --ok-text: #2e5a20;
-      --warn: #7a5010;
-      --warn-bg: #fdf4e0;
+      --bg:        #f5f2ee;
+      --bg2:       #faf8f5;
+      --bg3:       #ece8e2;
+      --border:    #ddd8d0;
+      --border2:   #ccc6bc;
+      --text:      #1e1b17;
+      --text2:     #6b6560;
+      --text3:     #a09890;
+      --accent:    #8a6a3a;
+      --accent2:   #6a4e28;
+      --ok:        #3a6a28;
+      --ok-bg:     #e8f2e0;
+      --ok-text:   #2e5a20;
+      --warn:      #7a5010;
+      --warn-bg:   #fdf4e0;
       --warn-text: #7a5010;
-      --crit: #8a2020;
-      --crit-bg: #faeaea;
+      --crit:      #8a2020;
+      --crit-bg:   #faeaea;
       --crit-text: #7a1818;
-      --over-bg: #e0edf8;
+      --over-bg:   #e0edf8;
       --over-text: #1a508a;
-      --radius: 8px;
-      --radius-sm: 5px;
-      --font: 'Outfit', sans-serif;
+      --r:  8px;
+      --rs: 5px;
+      --font:    'Outfit', sans-serif;
       --display: 'Cormorant Garamond', serif;
-      --mono: 'DM Mono', monospace;
+      --mono:    'DM Mono', monospace;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font);
-      font-size: 14px;
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-    }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14px; min-height: 100vh; -webkit-font-smoothing: antialiased; }
 
     /* HEADER */
-    .header {
-      background: var(--bg2);
-      border-bottom: 1px solid var(--border);
-      padding: 0 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 52px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .logo {
-      font-family: var(--display);
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--accent);
-      letter-spacing: .02em;
-    }
-    .logo span { color: var(--text3); font-weight: 300; font-family: var(--font); font-size: 13px; letter-spacing: .04em; }
-    .sync-dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--text3);
-      transition: background .3s;
-    }
-    .sync-dot.synced { background: var(--ok-text); }
+    .header { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 0 16px; display: flex; align-items: center; justify-content: space-between; height: 50px; position: sticky; top: 0; z-index: 100; }
+    .logo { font-family: var(--display); font-size: 18px; font-weight: 600; color: var(--accent); }
+    .logo span { color: var(--text3); font-weight: 300; font-family: var(--font); font-size: 12px; letter-spacing: .04em; }
+    .sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text3); transition: background .3s; flex-shrink:0; }
+    .sync-dot.synced  { background: var(--ok-text); }
     .sync-dot.syncing { background: var(--warn-text); animation: pulse 1s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.4} }
 
     /* NAV */
-    .nav {
-      display: flex;
-      gap: 2px;
-      padding: 12px 16px 0;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg2);
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
+    .nav { display: flex; gap: 2px; padding: 10px 12px 0; border-bottom: 1px solid var(--border); background: var(--bg2); overflow-x: auto; scrollbar-width: none; position: sticky; top: 50px; z-index: 99; }
     .nav::-webkit-scrollbar { display: none; }
-    .nav-btn {
-      padding: 8px 14px;
-      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--text3);
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      font-family: var(--font);
-      white-space: nowrap;
-      border-bottom: 2px solid transparent;
-      transition: all .15s;
-    }
-    .nav-btn:hover { color: var(--text2); }
+    .nav-btn { padding: 7px 13px; border-radius: var(--rs) var(--rs) 0 0; font-size: 13px; color: var(--text3); background: transparent; border: none; cursor: pointer; font-family: var(--font); white-space: nowrap; border-bottom: 2px solid transparent; transition: all .15s; }
+    .nav-btn:hover  { color: var(--text2); }
     .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
 
     /* MAIN */
-    .main { padding: 20px 16px; max-width: 900px; margin: 0 auto; }
+    .main { padding: 16px; max-width: 900px; margin: 0 auto; }
     .tab { display: none; }
     .tab.active { display: block; }
 
     /* METRICS */
-    .metrics { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 20px; }
-    @media(max-width:500px){ .metrics{ grid-template-columns:repeat(2,1fr); } }
-    .metric {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 12px 14px;
-    }
-    .metric-label { font-size: 11px; color: var(--text3); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .06em; }
-    .metric-val { font-size: 26px; font-weight: 400; color: var(--text); font-family: var(--mono); }
+    .metrics { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 16px; }
+    .metric { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 12px 14px; }
+    .metric-label { font-size: 10px; color: var(--text3); margin-bottom: 5px; text-transform: uppercase; letter-spacing: .06em; }
+    .metric-val   { font-size: 26px; font-weight: 400; font-family: var(--mono); }
 
     /* CARD */
-    .card {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      margin-bottom: 12px;
-      overflow: hidden;
-    }
-    .card-header {
-      padding: 13px 16px;
-      border-bottom: 1px solid var(--border);
-      font-size: 11px;
-      color: var(--text3);
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      font-weight: 500;
-    }
-    .card-body { padding: 0 16px; }
+    .card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 12px; overflow: hidden; }
+    .card-header { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; font-weight: 500; }
+    .card-body   { padding: 0 16px; }
 
-    /* ITEM ROWS */
-    .item-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 11px 0;
-      border-bottom: 1px solid var(--border);
-    }
+    /* ESTOQUE LIST */
+    .item-row { display: flex; align-items: center; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--border); }
     .item-row:last-child { border-bottom: none; }
-    .item-name { font-size: 13px; font-weight: 500; color: var(--text); }
-    .item-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
-
-    /* BAR */
-    .bar-wrap { width: 80px; height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; flex-shrink: 0; }
-    .bar-fill { height: 100%; border-radius: 2px; transition: width .4s; }
-
-    /* QTY */
-    .qty-display { min-width: 70px; text-align: right; font-family: var(--mono); font-size: 13px; font-weight: 500; }
-    .qty-max { color: var(--text3); font-weight: 400; }
+    .item-name { font-size: 13px; font-weight: 500; }
+    .item-sub  { font-size: 11px; color: var(--text3); margin-top: 1px; }
+    .bar-wrap  { width: 70px; height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; flex-shrink: 0; }
+    .bar-fill  { height: 100%; border-radius: 2px; transition: width .4s; }
+    .qty-d     { min-width: 65px; text-align: right; font-family: var(--mono); font-size: 13px; font-weight: 500; }
+    .qty-max   { color: var(--text3); font-weight: 400; }
 
     /* BADGE */
-    .badge {
-      display: inline-block;
-      font-size: 10px;
-      padding: 2px 7px;
-      border-radius: 20px;
-      font-weight: 500;
-      white-space: nowrap;
-      font-family: var(--mono);
-      letter-spacing: .02em;
-    }
-    .b-ok { background: var(--ok-bg); color: var(--ok-text); }
-    .b-low { background: var(--warn-bg); color: var(--warn-text); }
+    .badge { display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 20px; font-weight: 500; white-space: nowrap; font-family: var(--mono); }
+    .b-ok   { background: var(--ok-bg);   color: var(--ok-text);   }
+    .b-low  { background: var(--warn-bg); color: var(--warn-text); }
     .b-crit { background: var(--crit-bg); color: var(--crit-text); }
     .b-over { background: var(--over-bg); color: var(--over-text); }
 
-    /* FILTER PILLS */
-    .filter-bar { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
-    .pill {
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      border: 1px solid var(--border2);
-      background: transparent;
-      cursor: pointer;
-      color: var(--text3);
-      font-family: var(--font);
-      transition: all .15s;
-    }
-    .pill:hover { border-color: var(--text3); color: var(--text2); }
-    .pill.on { background: var(--accent); border-color: var(--accent); color: #faf8f5; font-weight: 500; }
+    /* PILLS */
+    .filter-bar { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+    .pill { padding: 5px 13px; border-radius: 20px; font-size: 12px; border: 1px solid var(--border2); background: transparent; cursor: pointer; color: var(--text3); font-family: var(--font); transition: all .15s; }
+    .pill:hover { border-color: var(--accent); color: var(--accent); }
+    .pill.on    { background: var(--accent); border-color: var(--accent); color: #faf8f5; font-weight: 500; }
 
     /* FORMS */
-    .form-row { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 14px; }
-    .form-group { display: flex; flex-direction: column; gap: 5px; }
-    .form-group label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; }
-    input, select, textarea {
-      background: var(--bg3);
-      border: 1px solid var(--border2);
-      border-radius: var(--radius-sm);
-      color: var(--text);
-      font-family: var(--font);
-      font-size: 13px;
-      padding: 8px 10px;
-      outline: none;
-      transition: border-color .15s;
+    .form-row { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 12px; }
+    .fg { display: flex; flex-direction: column; gap: 4px; }
+    .fg label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; }
+    input, select {
+      background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--rs);
+      color: var(--text); font-family: var(--font); font-size: 14px; padding: 9px 10px;
+      outline: none; transition: border-color .15s; width: 100%;
     }
     input:focus, select:focus { border-color: var(--accent); }
-    select option { background: var(--bg3); }
+    select option { background: var(--bg2); }
+
+    /* AUTOCOMPLETE */
+    .ac-wrap { position: relative; }
+    .ac-list {
+      position: absolute; top: 100%; left: 0; right: 0;
+      background: var(--bg2); border: 1px solid var(--border2); border-top: none;
+      border-radius: 0 0 var(--rs) var(--rs); max-height: 240px; overflow-y: auto;
+      z-index: 300; box-shadow: 0 6px 16px rgba(0,0,0,.1); display: none;
+    }
+    .ac-item { padding: 10px 12px; font-size: 13px; cursor: pointer; border-bottom: 1px solid var(--border); transition: background .1s; }
+    .ac-item:last-child { border-bottom: none; }
+    .ac-item:hover, .ac-item.sel { background: var(--bg3); }
+    .ac-item strong { color: var(--accent); }
+    .ac-sub { font-size: 11px; color: var(--text3); margin-left: 6px; }
 
     /* BUTTONS */
-    .btn {
-      padding: 8px 16px;
-      border-radius: var(--radius-sm);
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: var(--font);
-      border: 1px solid var(--border2);
-      background: transparent;
-      color: var(--text2);
-      transition: all .15s;
-      white-space: nowrap;
-    }
-    .btn:hover { border-color: var(--text3); color: var(--text); }
-    .btn-primary {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #faf8f5;
-    }
+    .btn { padding: 9px 16px; border-radius: var(--rs); font-size: 13px; font-weight: 500; cursor: pointer; font-family: var(--font); border: 1px solid var(--border2); background: transparent; color: var(--text2); transition: all .15s; white-space: nowrap; }
+    .btn:hover      { border-color: var(--text3); color: var(--text); }
+    .btn-primary    { background: var(--accent); border-color: var(--accent); color: #faf8f5; }
     .btn-primary:hover { background: var(--accent2); border-color: var(--accent2); }
+    .btn-sm         { padding: 5px 10px; font-size: 12px; }
+    .btn-danger     { border-color: var(--crit); color: var(--crit-text); }
+    .btn-danger:hover { background: var(--crit-bg); }
 
     /* UPLOAD */
-    .upload-area {
-      border: 1px dashed var(--border2);
-      border-radius: var(--radius);
-      padding: 28px 20px;
-      text-align: center;
-      cursor: pointer;
-      transition: all .15s;
-      margin-bottom: 14px;
-    }
-    .upload-area:hover { border-color: var(--accent); background: rgba(200,169,110,.04); }
-    .upload-icon { font-size: 26px; margin-bottom: 8px; opacity: .5; }
-    .upload-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
-    .upload-sub { font-size: 12px; color: var(--text3); }
+    .upload-area { border: 1px dashed var(--border2); border-radius: var(--r); padding: 24px 16px; text-align: center; cursor: pointer; transition: all .15s; margin-bottom: 12px; }
+    .upload-area:hover { border-color: var(--accent); background: rgba(138,106,58,.04); }
 
     /* ALERT */
-    .alert { padding: 10px 14px; border-radius: var(--radius-sm); font-size: 13px; margin: 8px 0; }
-    .a-ok { background: var(--ok-bg); color: var(--ok-text); border: 1px solid var(--ok); }
+    .alert { padding: 10px 14px; border-radius: var(--rs); font-size: 13px; margin: 8px 0; }
+    .a-ok   { background: var(--ok-bg);   color: var(--ok-text);   border: 1px solid var(--ok);   }
     .a-warn { background: var(--warn-bg); color: var(--warn-text); border: 1px solid var(--warn); }
-    .a-err { background: var(--crit-bg); color: var(--crit-text); border: 1px solid var(--crit); }
 
     /* TABLE */
     .tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
-    .tbl th { font-size: 11px; color: var(--text3); font-weight: 500; text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); text-transform: uppercase; letter-spacing: .04em; }
-    .tbl td { padding: 9px 10px; border-bottom: 1px solid var(--border); color: var(--text); }
+    .tbl th { font-size: 11px; color: var(--text3); font-weight: 500; text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
+    .tbl td { padding: 9px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
     .tbl tr:last-child td { border-bottom: none; }
-    .tbl tr:hover td { background: rgba(255,255,255,.02); }
+    .tbl tr:hover td { background: rgba(0,0,0,.015); }
+
+    /* INLINE EDIT */
+    .edit-row td { background: var(--bg3) !important; padding: 6px 6px !important; }
+    .ie { background: var(--bg2); border: 1px solid var(--border2); border-radius: 4px; color: var(--text); font-family: var(--font); font-size: 13px; padding: 5px 8px; width: 100%; outline: none; }
+    .ie:focus { border-color: var(--accent); }
 
     /* LOADING */
-    #loading {
-      position: fixed; inset: 0;
-      background: var(--bg);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 16px; z-index: 999;
-    }
+    #loading { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; z-index: 999; }
     #loading .logo { font-size: 22px; }
-    .spinner {
-      width: 28px; height: 28px;
-      border: 2px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin .8s linear infinite;
-    }
+    .spinner { width: 26px; height: 26px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
     #loading p { font-size: 13px; color: var(--text3); }
 
-    /* RESPONSIVE */
-    @media(max-width:600px) {
-      .bar-wrap { display: none; }
-      .qty-display { min-width: 55px; font-size: 12px; }
-    }
-
     /* SCROLLBAR */
-    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    /* RESPONSIVE */
+    @media(max-width: 500px) {
+      .metrics { grid-template-columns: repeat(2,1fr); }
+      .bar-wrap { display: none; }
+      .qty-d { min-width: 50px; font-size: 12px; }
+      .badge { font-size: 9px; padding: 2px 5px; }
+    }
+    @media(max-width: 640px) {
+      .form-row { flex-direction: column; }
+      .form-row .fg,
+      .form-row .ac-wrap { width: 100% !important; min-width: unset !important; }
+      .form-row .btn { width: 100%; }
+      .main { padding: 10px; }
+      .tbl th, .tbl td { padding: 7px 6px; }
+    }
   </style>
 </head>
 <body>
@@ -343,7 +222,7 @@
 <div id="app" style="display:none">
   <div class="header">
     <div class="logo">AURA <span>/ PA Cozinha</span></div>
-    <div id="sync-dot" class="sync-dot" title="Status de sincronização"></div>
+    <div id="sync-dot" class="sync-dot"></div>
   </div>
 
   <nav class="nav">
@@ -378,19 +257,19 @@
       </div>
     </div>
 
-    <!-- IMPORTAR VENDAS -->
+    <!-- VENDAS -->
     <div id="tab-vendas" class="tab">
       <div class="card">
-        <div class="card-header">Importar relatório de vendas do sistema</div>
+        <div class="card-header">Importar relatório de vendas</div>
         <div class="card-body" style="padding:16px">
           <p style="font-size:13px;color:var(--text2);margin-bottom:14px">
-            Importe o arquivo Excel exportado. O sistema usa o <strong style="color:var(--accent)">código do produto</strong> para dar baixa automática em todos os itens do PA.
-            <br><span style="color:var(--text3);font-size:12px">Salve o .xlsx como CSV UTF-8 no Excel antes de importar.</span>
+            Importe o CSV exportado do sistema. O <strong style="color:var(--accent)">código do produto</strong> é usado para dar baixa automática no PA.<br>
+            <span style="font-size:12px;color:var(--text3)">No Excel: Arquivo → Salvar como → CSV UTF-8.</span>
           </p>
           <div class="upload-area" onclick="document.getElementById('fi').click()">
-            <div class="upload-icon">↑</div>
-            <div class="upload-title">Selecionar arquivo CSV</div>
-            <div class="upload-sub">RelatorioVendaProdutos-DD_MM_AAAA.csv</div>
+            <div style="font-size:22px;margin-bottom:6px;opacity:.5">↑</div>
+            <div style="font-size:14px;font-weight:500;margin-bottom:3px">Selecionar arquivo CSV</div>
+            <div style="font-size:12px;color:var(--text3)">RelatorioVendaProdutos-DD_MM_AAAA.csv</div>
           </div>
           <input type="file" id="fi" accept=".csv" style="display:none" onchange="importarVendas(this)">
           <div id="v-alert"></div>
@@ -405,22 +284,28 @@
         <div class="card-header">Lançar produção da cozinha</div>
         <div class="card-body" style="padding:16px">
           <div class="form-row">
-            <div class="form-group" style="flex:1;min-width:160px">
-              <label>Item produzido</label>
-              <select id="p-item"></select>
+            <!-- AUTOCOMPLETE -->
+            <div class="ac-wrap" style="flex:1;min-width:200px">
+              <div class="fg">
+                <label>Item produzido</label>
+                <input type="text" id="p-busca" placeholder="Digite para buscar..." autocomplete="off"
+                  oninput="acFiltrar()" onkeydown="acNav(event)" onfocus="acFiltrar()">
+              </div>
+              <div class="ac-list" id="p-ac"></div>
+              <input type="hidden" id="p-idx">
             </div>
-            <div class="form-group" style="width:90px">
+            <div class="fg" style="width:90px">
               <label>Quantidade</label>
               <input type="number" id="p-qty" min="0.5" step="0.5" value="1">
             </div>
-            <div class="form-group" style="width:120px">
+            <div class="fg" style="width:130px">
               <label>Responsável</label>
               <select id="p-resp">
                 <option>Shirley</option><option>Fernanda</option><option>Gabriel</option>
                 <option>Claudio</option><option>Paulo</option><option>Outro</option>
               </select>
             </div>
-            <button class="btn btn-primary" onclick="lancarProd()">Lançar</button>
+            <button class="btn btn-primary" onclick="lancarProd()" style="align-self:flex-end">Lançar</button>
           </div>
           <div id="p-alert"></div>
         </div>
@@ -442,12 +327,12 @@
         <div class="card-header">Registrar desperdício</div>
         <div class="card-body" style="padding:16px">
           <div class="form-row">
-            <div class="form-group" style="flex:1;min-width:130px"><label>Produto</label><input type="text" id="d-prod" placeholder="Ex: Muçarela"></div>
-            <div class="form-group" style="width:100px"><label>Quantidade</label><input type="text" id="d-qty" placeholder="200g"></div>
-            <div class="form-group" style="width:110px"><label>Setor</label>
+            <div class="fg" style="flex:1;min-width:140px"><label>Produto</label><input type="text" id="d-prod" placeholder="Ex: Muçarela"></div>
+            <div class="fg" style="width:100px"><label>Quantidade</label><input type="text" id="d-qty" placeholder="200g"></div>
+            <div class="fg" style="width:110px"><label>Setor</label>
               <select id="d-setor"><option>Cozinha</option><option>Pizzaria</option><option>Bar</option><option>Salão</option></select>
             </div>
-            <div class="form-group" style="flex:1;min-width:140px"><label>Motivo</label>
+            <div class="fg" style="flex:1;min-width:150px"><label>Motivo</label>
               <select id="d-motivo">
                 <option>Estragou</option><option>Caiu no chão</option><option>Fora do padrão</option>
                 <option>Pedido errado</option><option>Queimou</option><option>Rasgou</option>
@@ -455,7 +340,7 @@
                 <option>Cortesia</option><option>Freezer estragou</option><option>Outro</option>
               </select>
             </div>
-            <button class="btn btn-primary" onclick="lancarDesp()">Registrar</button>
+            <button class="btn btn-primary" onclick="lancarDesp()" style="align-self:flex-end">Registrar</button>
           </div>
           <div id="d-alert"></div>
         </div>
@@ -475,8 +360,8 @@
     <div id="tab-inventario" class="tab">
       <div class="card">
         <div class="card-header">Inventário semanal</div>
-        <div class="card-body" style="padding:16px">
-          <p style="font-size:13px;color:var(--text2);margin-bottom:14px">Informe a quantidade contada fisicamente. Divergências são sinalizadas automaticamente.</p>
+        <div class="card-body" style="padding:12px 16px">
+          <p style="font-size:13px;color:var(--text2)">Informe a quantidade contada fisicamente. Divergências são sinalizadas automaticamente.</p>
         </div>
         <div class="card-body" style="overflow-x:auto">
           <table class="tbl">
@@ -493,19 +378,19 @@
       </div>
     </div>
 
-    <!-- CONFIG -->
+    <!-- PRATOS -->
     <div id="tab-config" class="tab">
       <div class="card">
         <div class="card-header">Adicionar item ao PA</div>
         <div class="card-body" style="padding:16px">
           <div class="form-row">
-            <div class="form-group" style="flex:1;min-width:130px"><label>Nome</label><input type="text" id="c-nome" placeholder="Ex: Risoto de Camarão"></div>
-            <div class="form-group" style="width:90px"><label>Unidade</label><input type="text" id="c-und" placeholder="Porções"></div>
-            <div class="form-group" style="width:100px"><label>Responsável</label><input type="text" id="c-resp" placeholder="Gabriel"></div>
-            <div class="form-group" style="width:70px"><label>Mínimo</label><input type="number" id="c-min" value="5"></div>
-            <div class="form-group" style="width:70px"><label>Máximo</label><input type="number" id="c-max" value="20"></div>
-            <div class="form-group" style="width:80px"><label>Estoque ini.</label><input type="number" id="c-ini" value="10"></div>
-            <button class="btn btn-primary" onclick="addItem()">Adicionar</button>
+            <div class="fg" style="flex:2;min-width:140px"><label>Nome</label><input type="text" id="c-nome" placeholder="Ex: Risoto de Camarão"></div>
+            <div class="fg" style="flex:1;min-width:80px"><label>Unidade</label><input type="text" id="c-und" placeholder="Porções"></div>
+            <div class="fg" style="flex:1;min-width:90px"><label>Responsável</label><input type="text" id="c-resp" placeholder="Gabriel"></div>
+            <div class="fg" style="width:72px"><label>Mínimo</label><input type="number" id="c-min" value="5"></div>
+            <div class="fg" style="width:72px"><label>Máximo</label><input type="number" id="c-max" value="20"></div>
+            <div class="fg" style="width:82px"><label>Estoque ini.</label><input type="number" id="c-ini" value="10"></div>
+            <button class="btn btn-primary" onclick="addItem()" style="align-self:flex-end">Adicionar</button>
           </div>
           <div id="c-alert"></div>
         </div>
@@ -514,16 +399,128 @@
         <div class="card-header">Itens cadastrados (<span id="c-count">0</span>)</div>
         <div class="card-body" style="overflow-x:auto">
           <table class="tbl">
-            <thead><tr><th>Cód</th><th>Item</th><th>Unid</th><th>Resp.</th><th>Mín</th><th>Máx</th><th>Atual</th><th></th></tr></thead>
+            <thead><tr><th>Cód</th><th>Item</th><th>Unid</th><th>Resp.</th><th>Mín</th><th>Máx</th><th>Atual</th><th style="min-width:130px"></th></tr></thead>
             <tbody id="c-list"></tbody>
           </table>
         </div>
       </div>
     </div>
 
-  </div><!-- /main -->
-</div><!-- /app -->
+  </div>
+</div>
 
 <script src="app.js"></script>
+
+<script>
+// ── AUTOCOMPLETE ──────────────────────────────────────────────
+let acIdx = -1;
+
+function acFiltrar() {
+  const q    = (document.getElementById('p-busca').value || '').toLowerCase().trim();
+  const list = document.getElementById('p-ac');
+  const sorted = [...pratos].sort((a,b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+  const hits = q ? sorted.filter(p => p.nome.toLowerCase().includes(q)) : sorted;
+
+  if (!hits.length) { list.style.display = 'none'; return; }
+  acIdx = -1;
+  list.style.display = 'block';
+  list.innerHTML = hits.map(p => {
+    const hi = q ? p.nome.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi'), '<strong>$1</strong>') : p.nome;
+    const realIdx = pratos.indexOf(p);
+    return `<div class="ac-item" data-nome="${p.nome}" data-i="${realIdx}"
+      onmousedown="acSelect('${p.nome.replace(/'/g,"\\'")}',${realIdx})">
+      ${hi}<span class="ac-sub">${p.und}</span></div>`;
+  }).join('');
+}
+
+function acSelect(nome, i) {
+  document.getElementById('p-busca').value = nome;
+  document.getElementById('p-idx').value   = i;
+  document.getElementById('p-ac').style.display = 'none';
+  acIdx = -1;
+}
+
+function acNav(e) {
+  const list  = document.getElementById('p-ac');
+  const items = list.querySelectorAll('.ac-item');
+  if (list.style.display === 'none' || !items.length) return;
+  if (e.key === 'ArrowDown') { e.preventDefault(); acIdx = Math.min(acIdx+1, items.length-1); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); acIdx = Math.max(acIdx-1, 0); }
+  else if (e.key === 'Enter' && acIdx >= 0) {
+    e.preventDefault();
+    const it = items[acIdx];
+    acSelect(it.dataset.nome, parseInt(it.dataset.i));
+    return;
+  } else if (e.key === 'Escape') { list.style.display = 'none'; return; }
+  else return;
+  items.forEach((el,i) => el.classList.toggle('sel', i === acIdx));
+  items[acIdx]?.scrollIntoView({block:'nearest'});
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.ac-wrap')) {
+    const l = document.getElementById('p-ac');
+    if (l) l.style.display = 'none';
+  }
+});
+
+// ── EDIÇÃO INLINE DE PRATOS ───────────────────────────────────
+let editIdx = null;
+
+function renderConfig() {
+  document.getElementById('c-count').textContent = pratos.length;
+  const tb = document.getElementById('c-list');
+  if (!tb) return;
+  tb.innerHTML = [...pratos]
+    .map((p, i) => {
+      if (editIdx === i) {
+        return `<tr class="edit-row">
+          <td><span style="font-size:11px;color:var(--text3);font-family:var(--mono)">${p.cod}</span></td>
+          <td><input class="ie" id="e-nome" value="${p.nome.replace(/"/g,'&quot;')}" style="min-width:130px"></td>
+          <td><input class="ie" id="e-und"  value="${p.und}"  style="width:75px"></td>
+          <td><input class="ie" id="e-resp" value="${p.resp}" style="width:85px"></td>
+          <td><input class="ie" id="e-min"  value="${p.min}"  type="number" style="width:58px"></td>
+          <td><input class="ie" id="e-max"  value="${p.max}"  type="number" style="width:58px"></td>
+          <td><input class="ie" id="e-qty"  value="${fmtQty(p.qty)}" type="number" style="width:62px"></td>
+          <td style="white-space:nowrap">
+            <button class="btn btn-sm btn-primary" onclick="saveEdit(${i})">Salvar</button>
+            <button class="btn btn-sm" onclick="cancelEdit()" style="margin-left:4px">Cancelar</button>
+          </td>
+        </tr>`;
+      }
+      return `<tr>
+        <td style="font-family:var(--mono);font-size:11px;color:var(--text3)">${p.cod}</td>
+        <td>${p.nome}</td>
+        <td style="color:var(--text3)">${p.und}</td>
+        <td style="color:var(--text3)">${p.resp}</td>
+        <td style="text-align:center">${p.min}</td>
+        <td style="text-align:center">${p.max}</td>
+        <td style="text-align:center;font-family:var(--mono);font-weight:500">${fmtQty(p.qty)}</td>
+        <td style="white-space:nowrap">
+          <button class="btn btn-sm" onclick="startEdit(${i})">Editar</button>
+          <button class="btn btn-sm btn-danger" onclick="remItem(${i})" style="margin-left:4px">Remover</button>
+        </td>
+      </tr>`;
+    }).join('');
+}
+
+function startEdit(i)  { editIdx = i;    renderConfig(); document.getElementById('e-nome')?.focus(); }
+function cancelEdit()  { editIdx = null; renderConfig(); }
+
+async function saveEdit(i) {
+  const nome = document.getElementById('e-nome').value.trim();
+  const und  = document.getElementById('e-und').value.trim() || pratos[i].und;
+  const resp = document.getElementById('e-resp').value.trim() || pratos[i].resp;
+  const min  = parseFloat(document.getElementById('e-min').value);
+  const max  = parseFloat(document.getElementById('e-max').value);
+  const qty  = parseFloat(document.getElementById('e-qty').value);
+  if (!nome)     { alert('Nome não pode ser vazio.'); return; }
+  if (max <= min){ alert('Máximo deve ser maior que mínimo.'); return; }
+  pratos[i] = { ...pratos[i], nome, und, resp, min, max, qty: isNaN(qty) ? pratos[i].qty : qty };
+  editIdx = null;
+  await salvarEstoque();
+  renderConfig();
+}
+</script>
 </body>
 </html>
